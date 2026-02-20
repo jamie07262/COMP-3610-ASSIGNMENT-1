@@ -1,0 +1,7 @@
+polars
+matplotlib
+numpy
+duckdb
+plotly
+streamlit
+nbformat>=4.2.0
