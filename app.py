@@ -230,8 +230,13 @@ if page == "Visualizations":
 
     with tab1:
         st.subheader("Bar chart: Top 10 pickup zones by trip count")
-        top_zones = pd.read_parquet("data/top_zones.parquet")
-    
+        # Group by PULocationID and count trips
+        top_zones = filtered_pdf.groupby('PULocationID').size().reset_index(name='trip_count')
+        zone_lookup = pd.read_csv('data/raw/taxi_zone_lookup.csv')
+        # Merge to get zone names
+        top_zones = top_zones.merge(zone_lookup, left_on='PULocationID', right_on='LocationID', how='left')
+        # Sort and select top 10
+        top_zones = top_zones.sort_values('trip_count', ascending=False).head(10)
         fig = px.bar(
             top_zones,
             x='Zone',
@@ -242,13 +247,11 @@ if page == "Visualizations":
         fig.update_yaxes(dtick=20000)
         fig.update_layout(xaxis_tickangle=45)
         st.plotly_chart(fig, width='stretch')
-        
         st.subheader("Insights from Top Pickup Zones")
         st.markdown("""
         JFK Airport, Upper East Side and Midtown Centers are the busiest pickup zones, with a trip count of over 130k. 
         This reflects the high demand for taxis in these areas, especially to and from the airports. As well as tourist hotspots like Times Sq/Theater District and Penn Station.
         """)
-
 
     with tab2:
         st.subheader("Line chart: Average fare by hour of day")
