@@ -117,8 +117,8 @@ st.sidebar.header("Filters")
 
 # Date range - pretty self-explanatory
 st.sidebar.subheader("Date Range")
-min_date = pd.to_datetime(df['pickup_date'].min()).date()
-max_date = pd.to_datetime(df['pickup_date'].max()).date()
+min_date = pd.to_datetime("2022-01-01").date()  
+max_date = pd.to_datetime("2024-12-31").date()
 
 date_range = st.sidebar.date_input(
     "Pick your dates:",
@@ -131,7 +131,13 @@ date_range = st.sidebar.date_input(
 if isinstance(date_range, tuple) and len(date_range) == 2:
     start_date, end_date = date_range
 else:
-    start_date = end_date = date_range
+    # If date_range is a numpy array, get the first element
+    if hasattr(date_range, '__getitem__'):
+        start_date = end_date = date_range[0]
+    else:
+        start_date = end_date = date_range
+start_date = pd.to_datetime(start_date).date()
+end_date = pd.to_datetime(end_date).date()
 
 # Hour range slider
 st.sidebar.subheader("Hour Range")
