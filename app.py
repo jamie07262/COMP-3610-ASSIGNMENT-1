@@ -244,12 +244,12 @@ if page == "Visualizations":
             title='Top 10 Pickup Zones by Trip Count',
             labels={'Zone': 'Pickup Zone', 'trip_count': 'Trip Count'}
         )
-        fig.update_yaxes(dtick=20000)
+        fig.update_yaxes(dtick=1000)
         fig.update_layout(xaxis_tickangle=45)
         st.plotly_chart(fig, width='stretch')
         st.subheader("Insights from Top Pickup Zones")
         st.markdown("""
-        Upper East Side South, JFK Airport and Midtown Center are the busiest pickup zones, with a trip count of over 130k. 
+        Upper East Side South, JFK Airport and Midtown Center are the busiest pickup zones, with a trip count of over 4k. 
         This reflects the high demand for taxis in these areas, especially to and from the airports. As well as tourist hotspots like Times Sq/Theater District and Penn Station.
         """)
 
