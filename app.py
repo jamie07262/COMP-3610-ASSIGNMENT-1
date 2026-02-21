@@ -31,9 +31,7 @@ def load_data():
                 st.error(f"Failed to download {filename.name}: {e}")
                 st.stop()
                 
-    """
-    Load the taxi data and do some basic prep work using polars.
-    """
+    
     expected_result = [
         "tpep_pickup_datetime", "tpep_dropoff_datetime", "PULocationID", "DOLocationID",
         "passenger_count", "trip_distance", "fare_amount", "tip_amount", "total_amount", "payment_type"
