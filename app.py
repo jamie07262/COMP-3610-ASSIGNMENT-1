@@ -14,23 +14,6 @@ st.markdown("""
 This dashboard provides insights into NYC Yellow Taxi trips patterns for January 2024, including top 10 busiest pickup zones, fare patterns, payment types, tip behavior, and popular pickup-dropoff pairs. Use the tabs to explore different aspects of the data.
 """)
 
-st.markdown("""
-<style>
-    .main-header {
-        font-size: 2.5rem;
-        font-weight: bold;
-        color: #1E3A5F;
-        margin-bottom: 0;
-    }
-    .sub-header {
-        font-size: 1.1rem;
-        color: #666;
-        margin-top: 0;
-    }
-</style>
-""", unsafe_allow_html=True)
-
-
 @st.cache_data
 def load_data():
     # Ensure files are downloaded before loading
