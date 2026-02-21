@@ -117,8 +117,8 @@ st.sidebar.header("Filters")
 
 # Date range - pretty self-explanatory
 st.sidebar.subheader("Date Range")
-min_date = pd.to_datetime("2022-01-01").date()  
-max_date = pd.to_datetime("2024-12-31").date()
+min_date = pd.to_datetime("2020-12-31").date()
+max_date = pd.to_datetime("2024-02-01").date()
 
 date_range = st.sidebar.date_input(
     "Pick your dates:",
