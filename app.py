@@ -43,8 +43,7 @@ def load_data():
         df = pl.read_parquet('yellow_taxi_data.parquet')
     except FileNotFoundError:
         try:
-            # Maybe it's in the parent directory?
-            df = pl.read_parquet('data/raw/yellow_taxi_data.parquet')
+            df = pl.read_parquet('../yellow_tripdata_2024-01.parquet')
         except FileNotFoundError:
             st.error("Can't find the dataset! Make sure 'yellow_taxi_data.parquet' is in the dashboard folder.")
             st.info("You can download it from: https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2024-01.parquet")
