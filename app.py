@@ -1,3 +1,5 @@
+from urllib.request import urlretrieve
+from pathlib import Path
 import streamlit as st
 import polars as pl
 import pandas as pd
@@ -31,6 +33,21 @@ st.markdown("""
 
 @st.cache_data
 def load_data():
+    # Ensure files are downloaded before loading
+    raw_dir = Path("data/raw")
+    raw_dir.mkdir(parents=True, exist_ok=True)
+    files = [
+        ("https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2024-01.parquet", raw_dir/"yellow_taxi_data.parquet"),
+        ("https://d37ci6vzurychx.cloudfront.net/misc/taxi_zone_lookup.csv", raw_dir/"taxi_zone_lookup.csv"),
+    ]
+    for url, filename in files:
+        if not filename.exists():
+            try:
+                urlretrieve(url, filename)
+            except Exception as e:
+                st.error(f"Failed to download {filename.name}: {e}")
+                st.stop()
+                
     """
     Load the taxi data and do some basic prep work using polars.
     """
@@ -39,15 +56,10 @@ def load_data():
         "passenger_count", "trip_distance", "fare_amount", "tip_amount", "total_amount", "payment_type"
     ]
     try:
-        # First try the local copy in the dashboard folder
-        df = pl.read_parquet('yellow_taxi_data.parquet')
+        df = pl.read_parquet('data/raw/yellow_taxi_data.parquet')
     except FileNotFoundError:
-        try:
-            df = pl.read_parquet('Downloads/yellow_tripdata_2024-01.parquet')
-        except FileNotFoundError:
-            st.error("Can't find the dataset! Make sure 'yellow_taxi_data.parquet' is in the dashboard folder.")
-            st.info("You can download it from: https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2024-01.parquet")
-            st.stop()
+        st.error("Can't find the dataset! Download failed or file missing.")
+        st.stop()
 
     # Validate columns and types
     missing = [m for m in expected_result if m not in df.columns]
